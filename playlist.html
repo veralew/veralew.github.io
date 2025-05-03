@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Music Playlist</title>
+  <!-- Favicon link -->
+  <link rel="icon" href="assets/images/baspis.jpg" type="image/jpeg">
   <style>
     body {
       margin: 0;
@@ -15,7 +17,28 @@
       height: 100vh;
       overflow: hidden;
     }
+    
+    /* Icon styling */
+    .icon-container {
+      position: absolute;
+      left: 200px;
+      top: 25px; 
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
 
+    .icon-container img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .icon-container:hover {
+      transform: rotate(360deg);
+    }
+    
+    
     .left-side {
       width: 50%;
       background-color: #e0f7fa;
@@ -152,6 +175,11 @@
 </head>
 <body>
 
+  <!-- Spinning baspis icon -->
+  <a href="https://veralew.github.io/" target="_blank" class="icon-container">
+    <img src="assets/images/baspis.jpg" alt="Baspis Icon">
+  </a>
+  
   <!-- Left Side - Now Playing -->
   <div class="left-side">
     <div class="now-playing">

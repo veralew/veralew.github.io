@@ -1,18 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Music Website</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vera Lew</title>
+  <!-- Favicon link -->
+  <link rel="icon" href="assets/images/baspis.jpg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    /* Icon styling */
+    .icon-container {
+      position: absolute;
+      left: 200px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .icon-container img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .icon-container:hover {
+      transform: rotate(360deg);
+    }
+
+    h1, p {
+      text-align: center;
+    }
+
+    audio {
+      display: block;
+      margin: 30px auto;
+    }
+
+    /* Playlist button */
+    .playlist-button {
+      position: fixed;
+      left: 200px;
+      top: 250px;
+      background-color: #9c27b0;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .playlist-button:hover {
+      background-color: #7b1fa2;
+    }
+
+    /* Typewriter text */
+    .typewriter {
+      position: absolute;
+      top: 150px;
+      left: 40%;
+      font-size: 50px;
+      font-family: 'Space Mono', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 1s steps(10, end) 1s forwards, blink 0.75s step-end infinite;
+      border-right: 4px solid black; /* Cursor style */
+    }
+
+    .no-blink {
+      border-right: none;  /* Removes the cursor by hiding the border */
+    }
+
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+      to {
+        width: 10ch; /* Adjust the width according to the text length */
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent; /* Makes cursor disappear */
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to My Music Website</h1>
-    <p>Enjoy the playlist!</p>
-    <audio controls>
-        <source src="path_to_your_song.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+
+  <!-- Spinning baspis icon -->
+  <a href="https://veralew.github.io/" target="_blank" class="icon-container">
+    <img src="assets/images/baspis.jpg" alt="Baspis Icon">
+  </a>
+
+  <!-- Playlist button -->
+  <a href="https://veralew.github.io/playlist.html" class="playlist-button">My Playlist 🎶</a>
+
+  <!-- Typewriter effect -->
+  <div class="typewriter">I'm Vera.</div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tw = document.querySelector(".typewriter");
+
+      // Stop blinking after typing is finished (after typing is done, 3.5 seconds)
+      setTimeout(() => {
+        tw.classList.add("no-blink");  // Hide the cursor
+      }, 2800); // Adjust timing to stop blink after typing
+    });
+  </script>
+
 </body>
 </html>
-
