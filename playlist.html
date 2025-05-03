@@ -1,27 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Music Playlist</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       background-color: #e0f7fa;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #333;
-      padding: 40px 20px;
-      margin: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .left-side {
+      width: 50%;
+      background-color: #e0f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .now-playing {
+      background-color: white;
+      border-radius: 20px;
+      padding: 50px 30px 30px 30px;
+      width: 300px;
+      height: 440px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .now-playing img#album-art {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 25px;
+    }
+
+    .track-info {
+      text-align: center;
+      width: 100%;
+    }
+
+    .track-info h2 {
+      margin: 0 0 20px;
+      font-size: 1.1em;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .controls button {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .control-icon {
+      width: 35px;
+      height: 35px;
+      object-fit: contain;
+    }
+
+    .controls input[type="range"] {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .time-info {
+      font-size: 0.9em;
+      color: #0277bd;
+      margin-top: 5px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .playlist-section {
+      width: 50%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 40px 30px;
+      box-sizing: border-box;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 40px;
       color: #0277bd;
+      margin-bottom: 30px;
     }
 
     .playlist-container {
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 0 0 auto;
+      margin-right: 80px;
       background-color: #ffffff;
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -34,6 +128,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      cursor: pointer;
     }
 
     .track:last-child {
@@ -47,11 +142,6 @@
       color: #01579b;
     }
 
-    audio {
-      width: 100%;
-      outline: none;
-    }
-
     .track:hover {
       background-color: #f1fafe;
       border-radius: 12px;
@@ -61,38 +151,169 @@
   </style>
 </head>
 <body>
-  <h1>Your Music Playlist</h1>
-  <div class="playlist-container">
-    
-    <div class="track">
-      <div class="track-title">Conte de la Vielle Grand-mère, op 31 no 2</div>
-      <audio controls>
-        <source src="assets/music/contedela.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-      </audio>
-    </div>
 
-    <div class="track">
-      <div class="track-title">Cinderella Waltz</div>
-      <audio controls>
-        <source src="assets/music/cinderellawaltz.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-      </audio>
-    </div>
-
-  </div>
-  
-  <div class="now-playing">
-    <img id="album-art" src="assets/images/default.jpg" alt="Album Art">
-    <div class="track-info">
-      <h2 id="track-title">Not Playing</h2>
-      <div class="controls">
-        <button onclick="togglePlay()" id="play-pause">▶️</button>
-        <input type="range" id="progress" value="0" max="100">
+  <!-- Left Side - Now Playing -->
+  <div class="left-side">
+    <div class="now-playing">
+      <img id="album-art" src="assets/images/default.jpg" alt="Album Art" />
+      <div class="track-info">
+        <h2 id="track-title">Not Playing</h2>
+        <div class="controls">
+            <div class="button-row">
+              <button onclick="toggleShuffle()" id="shuffle-btn">
+                <img src="assets/images/shuffle.jpg" alt="Shuffle" class="control-icon" />
+              </button>
+              <button onclick="previousTrack()" id="prev-btn">
+                <img src="assets/images/back.jpg" alt="Previous" class="control-icon" />
+              </button>
+              <button onclick="togglePlay()" id="play-pause">
+                <img src="assets/images/play.jpg" alt="Play" class="control-icon" />
+              </button>
+              <button onclick="nextTrack()" id="next-btn">
+                <img src="assets/images/next.jpg" alt="Next" class="control-icon" />
+              </button>
+              <button onclick="toggleRepeat()" id="repeat-btn">
+                <img src="assets/images/repeat.jpg" alt="Repeat" class="control-icon" />
+              </button>
+            </div>
+          <input type="range" id="progress" value="0" max="100" />
+        </div>
+        <div class="time-info">
+          <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Right Side - Playlist -->
+  <div class="playlist-section">
+    <h1>My Playlist</h1>
+    <div class="playlist-container">
+      <div class="track" onclick="playSongByIndex(0)">
+        <div class="track-title">Conte de la Vielle Grand-mère, op 31 no 2</div>
+      </div>
+
+      <div class="track" onclick="playSongByIndex(1)">
+        <div class="track-title">Cinderella Waltz</div>
+      </div>
+
+      <!-- Add more tracks here -->
+    </div>
+  </div>
+
+  <audio id="audio"></audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playPauseBtn = document.getElementById('play-pause');
+    const progressBar = document.getElementById('progress');
+    const trackTitle = document.getElementById('track-title');
+    const albumArt = document.getElementById('album-art');
+    const currentTimeElement = document.getElementById('current-time');
+    const totalTimeElement = document.getElementById('total-time');
+
+    let isPlaying = false;
+    let isShuffle = false;
+    let isRepeat = false;
+
+    const playlist = [
+      {
+        src: 'assets/music/contedela.mp3',
+        title: 'Conte de la Vielle Grand-mère, op 31 no 2',
+        cover: 'assets/images/contedela.jpg'
+      },
+      {
+        src: 'assets/music/cinderellawaltz.mp3',
+        title: 'Cinderella Waltz',
+        cover: 'assets/images/cinderellawaltz.jpg'
+      }
+    ];
+
+    let currentTrackIndex = 0;
+
+    function togglePlay() {
+      if (!audio.src) {
+        playSongByIndex(currentTrackIndex);
+        return;
+      }
+
+      if (audio.paused) {
+        audio.play();
+        isPlaying = true;
+        playPauseBtn.querySelector('img').src = 'assets/images/pause.jpg';
+      } else {
+        audio.pause();
+        isPlaying = false;
+        playPauseBtn.querySelector('img').src = 'assets/images/play.jpg';
+      }
+    }
+
+    function playSongByIndex(index) {
+      const track = playlist[index];
+      currentTrackIndex = index;
+      audio.src = track.src;
+      trackTitle.textContent = track.title;
+      albumArt.src = track.cover;
+      audio.play();
+      isPlaying = true;
+      playPauseBtn.querySelector('img').src = 'assets/images/pause.jpg';
+    }
+
+    function nextTrack() {
+      if (isShuffle) {
+        currentTrackIndex = Math.floor(Math.random() * playlist.length);
+      } else {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      }
+      playSongByIndex(currentTrackIndex);
+    }
+
+    function previousTrack() {
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      playSongByIndex(currentTrackIndex);
+    }
+
+    function toggleShuffle() {
+      isShuffle = !isShuffle;
+      alert('Shuffle: ' + (isShuffle ? 'On' : 'Off'));
+    }
+
+    function toggleRepeat() {
+      isRepeat = !isRepeat;
+      alert('Repeat: ' + (isRepeat ? 'On' : 'Off'));
+    }
+
+    audio.addEventListener('loadedmetadata', () => {
+      totalTimeElement.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+        currentTimeElement.textContent = formatTime(audio.currentTime);
+      }
+    });
+
+    progressBar.addEventListener('input', () => {
+      if (audio.duration) {
+        audio.currentTime = (progressBar.value / 100) * audio.duration;
+      }
+    });
+
+    audio.addEventListener('ended', () => {
+      if (isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        nextTrack();
+      }
+    });
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+  </script>
 </body>
 </html>
-
